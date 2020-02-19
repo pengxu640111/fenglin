@@ -1,0 +1,58 @@
+#!/usr/bin/python
+# encoding: utf-8
+import pymysql
+# 打开数据库连接
+db = pymysql.connect("localhost","root","xpP@ssW0rd","wzjh")
+# 使用cursor()方法获取操作游标
+cursor = db.cursor()
+# SQL 插入语句
+sql = "INSERT INTO EMPLOYEE(FIRST_NAME, \
+       LAST_NAME, AGE, SEX, INCOME) \
+       VALUES ('%s', '%s', '%d', '%c', '%d' )" % \
+       ('Mac Mohan', 'Mohan', 20, 'M', 2000)
+cursor.execute(sql) 
+
+#插入多条记录
+sql="INSERT INTO EMPLOYEE(FIRST_NAME,LAST_NAME,AGE,SEX,INCOME) VALUES(%s, %s,%s,%s,%s)"
+val =("John", "Macson", 2,"M",5000)
+cursor.execute(sql, val)  
+val = ("Jenny", "Mary ",30,"F",12500)  
+cursor.execute(sql, val)  
+#插入多条数据
+val=[("Tom","JAKaSon",35,"M",14000),  
+     ("Tom1","Highway" ,29,"M",6700),  
+     ("Lily","Road",30,"F",8000),  
+     ("Martin","Road",35,"M",14000),  
+     ("Sally","Fast 56",32,"M",15000)]  
+cursor.executemany(sql, val)  #应用excutemany()插入多条记录
+db.commit()  
+
+
+try:
+   # 执行sql语句
+   cursor.execute(sql)
+   # 提交到数据库执行
+   db.commit()
+except:
+   # 发生错误时回滚
+   db.rollback()
+# 关闭数据库连接
+
+#查询数据库
+sql = "SELECT * FROM EMPLOYEE ORDER BY AGE"
+cursor.execute(sql)
+   # 获取所有记录列表
+   
+results = cursor.fetchall()
+
+print("Database version : %s " , results)
+
+
+#将获取数据转换到DataFrame中
+
+import pandas as pd
+columns=["FIRST_NAME", "LAST_NAME", "AGE", "SEX", "INCOME"]
+df = pd.DataFrame(list(results),columns=columns)
+df.head()
+
+db.close()
