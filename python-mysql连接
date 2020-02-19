@@ -1,0 +1,33 @@
+# -*- coding: utf-8 -*-
+ # *===================================*
+    # * Created by xupeng
+    # * Author: xupeng 
+    # * Date: 2019/12/7
+    # * Time: 凌晨25
+    # * Project: PYTHON STUDY
+    # * Power: DATABASE
+    # *===================================*
+import pymysql
+   # 打开数据库连接（ip/数据库用户名/登录密码/数据库名）
+conn = pymysql.connect("localhost", "root", "xpP@ssW0rd", "wzjh")
+    # 使用 cursor() 方法创建一个游标对象 cursor
+cursor = conn.cursor()
+    
+    # 使用 execute()  方法执行 SQL 查询
+cursor.execute("SELECT * from customer")
+    
+# 使用 fetchone() 方法获取单条数据，fetchmany()获取多条数据，fetchall()获取所有记录.
+#sql="INSERT INTO city(ID,Name,CountryCode,District,Population) VALUES(%s,%s,%s,%s,%s)"
+#val = ("4079","china","PK","Hubei",9600)  
+#sql="INSERT INTO customer(Id,Name,Address,Telph) VALUES(s%,s%,s%,s%)"
+sql="'INSERT INTO wzjh.customer(Id,Name,Address,Telph) VALUES(4,'liliming','Xicheng District of Beijing','010-778899')'"
+#val=(3,"liliming","Xicheng District of Beijing","010-778899")
+cursor.execute(sql)  
+data = cursor.fetchall()
+#print("Database version : %s " , data)    
+#将获取数据列出
+for x in data:  
+     print(x)     
+    
+    # 关闭数据库连接
+conn.close()
